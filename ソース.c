@@ -417,7 +417,7 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 					sum_r2[l][i][k] += (I[l][i][k + 1] - y_output[l]) * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
 					sum_r[i][k] += sum_r2[l][i][k];
 				}
-			sum_r[i][k] = sum_r[i][k]/ data;
+			//sum_r[i][k] = sum_r[i][k]/ data;
 		}
 		//勾配を求める
 		for (i = 0;i < each_layer;i++) {
@@ -434,11 +434,11 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 			for (i = 0;i < each_layer;i++) {
 				for (l = 0;l < data;l++) {
 					for (j = 0;j < output;j++) {
-						sum_r2[l][i][k] += sum_r[j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
+						sum_r2[l][i][k] += sum_r2[l][j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
 					}
 					sum_r[i][k] += sum_r2[l][i][k];
 				}
-				sum_r[i][k] = sum_r[i][k]/ data;
+				//sum_r[i][k] = sum_r[i][k]/ data;
 			}
 
 			//勾配を求める
@@ -455,7 +455,7 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 			for (i = 0;i < output;i++) {
 				for (j = 0;j < each_layer + 1;j++) {
 					if (j == each_layer)
-						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k];
+						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k]/data;
 					else
 						w[j][i][k] = w[j][i][k] - epsilon * grad[j][i][k]/data;
 				}
@@ -465,7 +465,7 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 			for (i = 0;i < each_layer;i++) {
 				for (j = 0;j < input + 1;j++) {
 					if (j == input)
-						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k];
+						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k]/data;
 					else
 						w[j][i][k] = w[j][i][k] - epsilon * grad[j][i][k]/data;
 				}
@@ -478,11 +478,11 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 			for (i = 0;i < each_layer;i++) {
 				for (l = 0;l < data;l++) {
 					for (j = 0;j < output;j++) {
-						sum_r2[l][i][k] += sum_r[j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
+						sum_r2[l][i][k] += sum_r2[l][j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
 					}
 					sum_r[i][k] += sum_r2[l][i][k];
 				}
-				sum_r[i][k] = sum_r[i][k]/ data;
+				//sum_r[i][k] = sum_r[i][k]/ data;
 			}
 
 			//勾配を求める
@@ -498,11 +498,11 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 			for (i = 0;i < each_layer;i++) {
 				for (l = 0;l < data;l++) {
 					for (j = 0;j < each_layer;j++) {
-						sum_r2[l][i][k] += sum_r[j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
+						sum_r2[l][i][k] += sum_r2[l][j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
 					}
 					sum_r[i][k] += sum_r2[l][i][k];
 				}
-				sum_r[i][k] = sum_r[i][k]/ data;
+				//sum_r[i][k] = sum_r[i][k]/ data;
 			}
 			//勾配を求める
 
@@ -519,7 +519,7 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 			for (i = 0;i < output;i++) {
 				for (j = 0;j < each_layer + 1;j++) {
 					if (j == each_layer)
-						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k];
+						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k]/data;
 					else
 						w[j][i][k] = w[j][i][k] - epsilon * grad[j][i][k]/data;
 				}
@@ -528,7 +528,7 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 			for (i = 0;i < each_layer;i++) {
 				for (j = 0;j < each_layer + 1;j++) {
 					if (j == each_layer)
-						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k];
+						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k]/data;
 					else
 						w[j][i][k] = w[j][i][k] - epsilon * grad[j][i][k]/data;
 				}
@@ -537,7 +537,7 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 			for (i = 0;i < each_layer;i++) {
 				for (j = 0;j < input + 1;j++) {
 					if (j == input)
-						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k];
+						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k]/data;
 					else
 						w[j][i][k] = w[j][i][k] - epsilon * grad[j][i][k]/data;
 				}
@@ -549,33 +549,33 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 			for (i = 0;i < each_layer;i++) {
 				for (l = 0;l < data;l++) {
 					for (j = 0;j < output;j++) {
-						sum_r2[l][i][k] += sum_r[j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
+						sum_r2[l][i][k] += sum_r2[l][j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
 					}
 					sum_r[i][k] += sum_r2[l][i][k];
 				}
-				sum_r[i][k] = sum_r[i][k]/ data;
+				//sum_r[i][k] = sum_r[i][k]/ data;
 			}
 
 			for (k = middle_layer - 2;k > 0;k--) {
 				for (i = 0;i < each_layer;i++) {
 					for (l = 0;l < data;l++) {
 						for (j = 0;j < each_layer;j++) {
-							sum_r2[l][i][k] += sum_r[j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
+							sum_r2[l][i][k] += sum_r2[l][j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
 						}
 						sum_r[i][k] += sum_r2[l][i][k];
 					}
-					sum_r[i][k] = sum_r[i][k]/ data;
+					//sum_r[i][k] = sum_r[i][k]/ data;
 				}
 			}
 			//入力層k=0
 			for (i = 0;i < each_layer;i++) {
 				for (l = 0;l < data;l++) {
 					for (j = 0;j < each_layer;j++) {
-						sum_r2[l][i][k] += sum_r[j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
+						sum_r2[l][i][k] += sum_r2[l][j][k + 1] * w[i][j][k + 1] * I[l][i][k + 1] * (1 - I[l][i][k + 1]);
 					}
 					sum_r[i][k] += sum_r2[l][i][k];
 				}
-				sum_r[i][k] = sum_r[i][k] / data;
+				//sum_r[i][k] = sum_r[i][k] / data;
 			}
 			//勾配の計算
 			for(k=middle_layer-1;k>0;k--){
@@ -600,7 +600,7 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 				for (i = 0;i < output;i++) {
 					for (j = 0;j < each_layer + 1;j++) {
 						if (j == each_layer)
-							w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k];
+							w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k]/data;
 						else
 							w[j][i][k] = w[j][i][k] - epsilon * grad[j][i][k]/data;
 					}
@@ -609,7 +609,7 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 				for (i = 0;i < each_layer;i++) {
 					for (j = 0;j < each_layer + 1;j++) {
 						if (j == each_layer)
-							w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k];
+							w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k]/data;
 						else
 							w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k] * grad[j][i][k]/data;
 					}
@@ -619,7 +619,7 @@ void batch_training(int input, int output, int data, int each_layer, int middle_
 			for (i = 0;i < each_layer;i++) {
 				for (j = 0;j < input + 1;j++) {
 					if (j == input)
-						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k];
+						w[j][i][k] = w[j][i][k] - epsilon * sum_r[i][k]/data;
 					else
 						w[j][i][k] = w[j][i][k] - epsilon * grad[j][i][k]/data;
 				}
